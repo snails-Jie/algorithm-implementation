@@ -6,6 +6,6 @@
 
 ### 学习资料
  [B+树算法学习视频](https://www.youtube.com/channel/UCZCFT11CWBi3MHNlGf019nw/featured) <br/>
- [B+树代码参考](https://github.com/jiaguofang/b-plus-tree)
+ [B+树代码参考](https://github.com/jiaguofang/b-plus-tree) <br/>
  [红黑树学习视频](https://www.youtube.com/channel/UCzDJwLWoYCUQowF_nG3m5OQ)
  
