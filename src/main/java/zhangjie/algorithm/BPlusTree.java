@@ -6,6 +6,9 @@ import java.util.List;
 
 /**
  * B+树
+ * 1. m-way st  --> 节点有m-1个key
+ *   1.1 m：表示有m个孩子节点
+ * 2. 创建过程自下而上
  * @Author zhangjie
  * @Date 2020/6/30 11:11
  **/
