@@ -19,5 +19,6 @@ public class UserServiceImpl {
         System.out.println("用户" + name +"开始注册");
         applicationEventPublisher.publishEvent(new UserRegisterEvent(name));
         System.out.println("用户" + name +"注册完成");
+        applicationEventPublisher.publishEvent(new UserRegisterCompleteEvent(name+"完成注册"));
     }
 }
