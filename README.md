@@ -44,5 +44,20 @@
   1.1 在内存创建两个对象：一个在堆内存，一个在常量池，堆内存对象是常量池对象的一个拷贝副本
 
 
+### 异步编程（观察者模式）
+#### [Spring中的事件监听机制](https://segmentfault.com/a/1190000020967936)
+1. 在Spring中，事件：ApplicationEvent、事件监听者：ApplicationListener接口
+2. Spring的事件默认是同步的（调用#pushEvent后处于阻塞）<br/>
+   2.1 好处： 单线程同步可以进行事务管理
+![](img/spring事件类图.png)<br/>
+(1) 事件：其继承自JDK的EventObject<br/>
+![](img/spring事件发布者.png)<br/>
+(1) 最终委托给ApplicationEventMulticaster#multicastEvent方法<br/>
+(2) 如果容器中没有ApplicationEventMulticaster实现类，则new 一个SimpleApplicationEventMulticaster<br/>
+   -->参考：AbstractApplicationContext#initApplicationEventMulticaster<br/>
+(3) 如果提供一个executor，就可以异步支持发布事件，否则为同步发布<br/>
+3. 总结
+![](img/事件发布流程图.png)
+
  
  
