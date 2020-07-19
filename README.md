@@ -59,5 +59,23 @@
 3. 总结
 ![](img/事件发布流程图.png)
 
+#### CompletableFuture的使用分析
+![](img/CompletableFuture执行流程分析.png)
+1. supplyAsync方法会接受一个生产者(Supplier)作为参数，返回一个CompletableFuture<br/>
+  1.1 生产者方法由ForkJoinPool池中的某个执行线程
+2. 对多个异步任务进行流水线操作<br/>
+  ![](img/异步任务流水线.png)<br/>
+  2.1 thenCompose方法允许对两个异步操作进行流水线，并且与前面的异步任务有依赖<br/>
+  ![](img/异步任务并行组合.png)<br/>
+  2.2 thenCombine:将两个并行异步任务的结果组合起来<br/>
+3. 响应CompletableFuture的completion事件（thenAccept方法）
+  
+  
+  
+
+
+
+
+
  
  
