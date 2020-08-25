@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="beanPostProcessor" class="zhangjie.spring.beanlife.MyBeanPostProcessor">
+    </bean>
+
+    <bean id="instantiationAwareBeanPostProcessor" class="zhangjie.spring.beanlife.MyInstantiationAwareBeanPostProcessor">
+    </bean>
+
+    <bean id="beanFactoryPostProcessor" class="zhangjie.spring.beanlife.MyBeanFactoryPostProcessor">
+    </bean>
+
+    <bean id="person" class="zhangjie.spring.beanlife.Person" init-method="myInit"
+          destroy-method="myDestory" scope="singleton" p:name="张三" p:address="广州"
+          p:phone="159000000" />
+
+    <bean id="student" class="zhangjie.spring.beanlife.Student" p:name="zhangjie" p:age="26"
+                   scope="singleton" init-method="myInit" destroy-method="myDestory"/>
+
+</beans>
