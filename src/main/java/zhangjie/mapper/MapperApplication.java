@@ -9,7 +9,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @Date 2020/9/6 12:55
  **/
 @SpringBootApplication
-@MapperScan(basePackages = "zhangjie.mapper.mybatis.mapper")
+@MapperScan(basePackages = {"zhangjie.mapper.mybatis.mapper","zhangjie.mapper.mybatis.typeHandler"})
 public class MapperApplication {
     public static void main(String[] args) {
         SpringApplication.run(MapperApplication.class, args);
