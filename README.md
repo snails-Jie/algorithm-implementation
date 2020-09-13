@@ -45,21 +45,12 @@
    3.3 惰性求值（Lazy valuation）:直到doValidate()验证才真正执行了<br/>
    3.4 直接使用默认提供的静态方法toSimple()来做一个回调函数传入result()方法<br/>
    
-### 高级玩法
-#### 与JSR303规范最佳实现Hibernate Validator集成
-1. Hibernate Validator是JSR 303 – Bean Validation规范的一个最佳的实现类库 <br/>
-2. maven依赖
-    ```
-    <dependency>
-        <groupId>com.baidu.unbiz</groupId>
-        <artifactId>fluent-validator-jsr303</artifactId>
-        <version>1.0.5</version>
-    </dependency>
-    ```
-3. 属性加上Hibernate Validator的注解<br/>
-4. 校验<br/>
-```
-
-```
+### 用法简介
+#### Hibernate Validator集成
+#### 注解验证
+#### 分组
+#### 级联对象图
+#### Spring AOP集成
+#### 国际化支持
    
  

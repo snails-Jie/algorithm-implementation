@@ -30,6 +30,20 @@
             <version>1.0.9</version>
         </dependency>
 
+        <!-- 与JSR303规范最佳实现Hibernate Validator集成 -->
+        <dependency>
+            <groupId>com.baidu.unbiz</groupId>
+            <artifactId>fluent-validator-jsr303</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
+        <!-- 使用Spring增强功能 -->
+        <dependency>
+            <groupId>com.baidu.unbiz</groupId>
+            <artifactId>fluent-validator-spring</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
         <!-- 方便等会写单元测试 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
