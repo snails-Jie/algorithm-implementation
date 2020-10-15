@@ -1,10 +1,9 @@
-package zhangjie.listener;
+package zhangjie.api.design;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * 参考：https://segmentfault.com/a/1190000020967936
  * @ClassName Application
  * @Description: TODO
  * @author: zhangjie
