@@ -1,6 +1,8 @@
 package zhangjie.api.design.dto;
 
 import lombok.Data;
+import zhangjie.api.design.annotations.Create;
+import zhangjie.api.design.annotations.IdentityCardNumber;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
@@ -20,4 +22,8 @@ public class User {
     @NotNull(message = "age不能为空")
     @Max(value = 12, message = "最大为12")
     private Integer age;
+
+    @NotNull(message = "idCard不能为空",groups = Create.class)
+    @IdentityCardNumber(message = "idCard错误",groups = Create.class)
+    private String idCard;
 }

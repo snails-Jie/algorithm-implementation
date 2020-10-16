@@ -5,7 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import zhangjie.api.design.annotations.Create;
+import zhangjie.api.design.annotations.IdentityCardNumber;
 import zhangjie.api.design.annotations.ResponseResult;
+import zhangjie.api.design.annotations.Update;
 import zhangjie.api.design.dto.Order;
 import zhangjie.api.design.dto.User;
 import zhangjie.api.design.enums.ResultCode;
@@ -72,6 +75,23 @@ public class OrderController {
     @GetMapping("/validator/user")
     public Result validatorUser(@Valid User user){
         return Result.success("你好，" + user.getName());
+    }
+
+    /** 校验分组 */
+    @GetMapping("/validator/user/group/update")
+    public Result validatorGroupUpdateUser(@Validated(Update.class) User user){
+        return Result.success("你好，" + user.getName());
+    }
+
+    @GetMapping("/validator/user/group/create")
+    public Result validatorGroupCreateUser(@Validated(Create.class) User user){
+        return Result.success("你好，" + user.getName());
+    }
+
+    /** 自定义校验注解 */
+    @GetMapping("/validator/customer")
+    public Result customerValidator(@IdentityCardNumber(message = "身份证号码不是111") String carNo){
+        return Result.success("身份证号码，" + carNo);
     }
 
 }

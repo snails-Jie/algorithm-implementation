@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import zhangjie.api.design.enums.ResultCode;
 import zhangjie.api.design.response.Result;
 
+import javax.validation.ConstraintDefinitionException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
@@ -25,7 +26,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result defaultErrorHandler(Exception e){
-        if(e instanceof ConstraintViolationException){
+        if(e instanceof ConstraintViolationException){//参数注解
             ConstraintViolationException constraintViolationException = (ConstraintViolationException) e;
             String message = StringUtils.collectionToCommaDelimitedString(
                     constraintViolationException.getConstraintViolations()
@@ -34,7 +35,7 @@ public class GlobalExceptionHandler {
                         .collect(Collectors.toList())
             );
             return Result.failure(ResultCode.PARAM_IS_INVALID,message);
-        }else if(e instanceof BindException){
+        }else if(e instanceof BindException){//实体注解
             BindException bindException = (BindException) e;
             String message = StringUtils.collectionToCommaDelimitedString(
                     bindException.getAllErrors()
