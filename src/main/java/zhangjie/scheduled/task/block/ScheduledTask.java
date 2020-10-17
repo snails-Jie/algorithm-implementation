@@ -3,9 +3,6 @@ package zhangjie.scheduled.task.block;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import sun.util.resources.LocaleData;
-
-import java.util.Locale;
 
 /**
  * 定时任务默认使用单线程:scheduling-1
