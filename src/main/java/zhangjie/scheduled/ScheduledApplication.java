@@ -14,9 +14,16 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableRetry
 //@EnableAsync
-public class ScheduledApplication {
+public class ScheduledApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(ScheduledApplication.class, args);
+        //增加钩子（注释后，DisposableBean依然关闭后执行）
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("执行 ShutdownHook ....");
+            }
+        }));
     }
 }

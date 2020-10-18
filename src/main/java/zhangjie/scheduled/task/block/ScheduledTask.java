@@ -12,18 +12,18 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ScheduledTask {
-    @Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron = "0/20 * * * * ?")
     public void task1() throws InterruptedException {
         log.info("I am task11111111, current thread: {}", Thread.currentThread());
-        while (true) {
-            //模拟耗时任务，阻塞10s
-            Thread.sleep(10000);
-            break;
+        for(int i=0;i<10;i++){
+            Thread.sleep(1000);
+            System.out.println("循环.....");
         }
+        System.out.println("循环完毕");
     }
 
-    @Scheduled(cron = "0/5 * * * * ?")
-    public void task2() {
-        log.info("I am task22222222, current thread: {}", Thread.currentThread());
-    }
+//    @Scheduled(cron = "0/5 * * * * ?")
+////    public void task2() {
+////        log.info("I am task22222222, current thread: {}", Thread.currentThread());
+////    }
 }

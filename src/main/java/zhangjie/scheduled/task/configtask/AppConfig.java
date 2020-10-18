@@ -24,8 +24,13 @@ public class AppConfig implements SchedulingConfigurer {
         return Executors.newScheduledThreadPool(3);
     }
 
+    /**
+     * 指定线程池
+     * @param scheduledTaskRegistrar
+     */
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
         scheduledTaskRegistrar.setScheduler(taskExecutor());
     }
+
 }
