@@ -6,5 +6,7 @@ package zhangjie.state.enums;
  */
 
 public enum Events {
-    E1,E2
+    ONLINE,
+    PUBLISH,
+    ROLLBACK
 }

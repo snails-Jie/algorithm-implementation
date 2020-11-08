@@ -6,5 +6,7 @@ package zhangjie.state.enums;
  */
 
 public enum States {
-    SI,S1,S2
+    DRAFT,
+    PUBLISH_TODO,
+    PUBLISH_DONE,
 }

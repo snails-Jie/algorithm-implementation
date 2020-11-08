@@ -31,6 +31,12 @@
             <version>2.1.3.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 方便等会写单元测试 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

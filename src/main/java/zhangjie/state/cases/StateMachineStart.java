@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Component;
 import zhangjie.state.enums.Events;
+import zhangjie.state.enums.States;
 
 import javax.annotation.Resource;
 
@@ -17,11 +18,13 @@ import javax.annotation.Resource;
 public class StateMachineStart implements CommandLineRunner {
 
     @Resource
-    private StateMachine stateMachine;
+    StateMachine<States, Events> stateMachine;
 
     @Override
     public void run(String... args) throws Exception {
-        stateMachine.sendEvent(Events.E1);
-        stateMachine.sendEvent(Events.E2);
+        stateMachine.start();
+        stateMachine.sendEvent(Events.PUBLISH);
+        stateMachine.sendEvent(Events.ONLINE);
+        stateMachine.sendEvent(Events.ROLLBACK);
     }
 }
