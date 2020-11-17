@@ -26,6 +26,129 @@
     3.4 次态：条件满足后要迁往的新状态<br/>
 4. 状态机的难点不在于编码，在于理清状态的迁移图<br/>
 
+#### spring有限状态机学习笔记
+![代码实现流程](https://oscimg.oschina.net/oscnet/389a2040da9cec8562afa8a1c191b7721d1.jpg)
+1. Spring 状态机选择器不支持事件触发<br/>
+  1.1 状态选择器：withChoice() <br/>
+  1.2 使用事件触发情况下只能使用接口Guard进行辅助<br/>
+  1.3 如果想实现check后业务处理 --> action实现
+    ```
+    .withChoice()
+                        .source(ComplexFormStates.CHECK_CHOICE)
+                        .first(ComplexFormStates.CONFIRM_FORM, new ComplexFormCheckChoiceGuard(),new ComplexFormChoiceAction())
+                        .last(ComplexFormStates.DEAL_FORM,new ComplexFormChoiceAction())
+                        .and()
+    ```
+2. 项目中需要考虑的问题<br/>
+  2.1 多种流程怎么处理（例如，订单流程与运单流程、不同类型的运单处理流程）<br/>
+  2.2 参数问题（例如传订单号以及入库信息怎么传）<br/>
+  2.3 存储问题<br/>
+    (1) 状态机如果有多个，需要时从哪取，暂时不需要放哪<br/>
+3. 多个状态机的做法  --> builder <br/>
+    3.1 machineId是状态机的配置类和事件实现类的关联<br/>
+    ```
+    builder.configureConfiguration()
+                .withConfiguration()
+                .machineId(MACHINEID)
+                .beanFactory(beanFactory);
+    
+    @WithStateMachine(id="orderMachine")
+    public class OrderEventConfig {
+    @OnTransition(target = "UNPAID")
+    public void create() {
+       logger.info("---订单创建，待支付---");
+    }
+    
+    ```
+    3.2 在controller类里注入StateMachineBuilder<br/>
+    (1) 状态机应该和业务对象一一对应<br/>
+4. 传递参数的message <br/>
+  4.1 spring通用消息组成：Header + Payload <br/>
+  4.1 需要把状态值传递给业务方法，同样处理状态变化也需要业务数据<br/>
+    ```
+    // 触发RECEIVE事件
+    Order order = new Order(orderId, "547568678", "广东省深圳市", "13435465465", "RECEIVE");
+    Message<OrderEvents> message = MessageBuilder.withPayload(OrderEvents.RECEIVE).setHeader("order", order).build();
+    stateMachine.sendEvent(message);
+    ```
+    (1) 如果需要传递多个数据对象，可以多次setHeader<br/>
+  4.2 状态机处理类接收参数并处理<br/>
+    ```
+       @OnTransition(source = "WAITING_FOR_RECEIVE", target = "DONE")
+        public void receive(Message<OrderEvents> message) {
+            System.out.println("传递的参数：" + message.getHeaders().get("order"));
+            logger.info("---用户已收货，订单完成---");
+        }
+    ```
+5. 持久化<br/>
+   5.1 持久化到本地内存<br/>
+        (1) spring提供接口：StateMachinePersist规范管理map
+       （2）StateMachinePersist保存的对象是StateMachineContext，不是StateMachine，需要配置一下
+    ```
+     @Component
+     public class InMemoryStateMachinePersist implements StateMachinePersist<OrderStates, OrderEvents, String> {
+     	private Map<String, StateMachineContext<OrderStates, OrderEvents>> map = new HashMap<String, StateMachineContext<OrderStates,OrderEvents>>();
+     	@Override
+     	public void write(StateMachineContext<OrderStates, OrderEvents> context, String contextObj) throws Exception {
+     		map.put(contextObj, context);
+     	}
+     	@Override
+     	public StateMachineContext<OrderStates, OrderEvents> read(String contextObj) throws Exception {
+     		return map.get(contextObj);
+     	}
+     }
+    ```
+    ```
+    @Configuration
+    public class PersistConfig {
+        @Autowired
+        private InMemoryStateMachinePersist inMemoryStateMachinePersist;
+        /**
+         * 注入StateMachinePersister对象
+         * @return
+         */
+        @Bean(name="orderMemoryPersister")
+        public StateMachinePersister<OrderStates, OrderEvents, String> getPersister() {
+            return new DefaultStateMachinePersister<>(inMemoryStateMachinePersist);
+        }
+    }
+       注意：1. InMemoryStateMachinePersist 实现的接口是org.springframework.statemachine.StateMachinePersist
+            2. getPersister方法返回的是org.springframework.statemachine.persist.StateMachinePersister接口
+             2.1 StateMachinePersister是可以直接保存StateMachine对象的
+    ```
+    ```
+    //持久化stateMachine
+    orderMemorypersister.persist(stateMachine, order.getId());
+    //取出状态机
+    orderMemorypersister.restore(stateMachine, id);
+    ```
+   5.2 持久化到redis <br/>
+        (1)原因：一般都是多台机分布式运行<br/>
+6.  伪持久化和中间段的状态机<br/>
+    6.1 状态机的主要作用：规范整个订单业务流程的状态和事件<br/>
+     --> 只需知道订单的状态，然后伴随业务到下一个状态节点<br/>
+    6.2 任意调节状态的才是我们需要的状态机<br/>
+    ```
+    @Component
+    public class OrderStateMachinePersist implements StateMachinePersist<OrderStates, OrderEvents, Order> {
+    
+        @Override
+        public void write(StateMachineContext<OrderStates, OrderEvents> context, Order contextObj) throws Exception {
+            //这里不做任何持久化工作
+        }
+    
+        @Override
+        public StateMachineContext<OrderStates, OrderEvents> read(Order contextObj) throws Exception {
+            StateMachineContext<OrderStates, OrderEvents> result = new DefaultStateMachineContext<OrderStates, OrderEvents>(OrderStates.valueOf(contextObj.getState()), 
+                    null, null, null, null, "orderMachine");
+            return result;
+        }
+    }
+    ```
+      
+
+
+
 #### 示例
 1. 添加依赖：spring-statemachine-starter <br/>
 2. 状态机配置：参考项目中的StateMachineConfig类<br/>
